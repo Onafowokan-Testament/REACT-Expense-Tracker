@@ -6,32 +6,32 @@ import Form from "./components/form";
 import Table from "./components/Table";
 
 function App() {
-  const [allItems, setAllItems] = useState([
+  const [expenses, setAllItems] = useState([
     { id: 1, description: "cinema", amount: 50, category: "Entertainment" },
   ]);
 
   const storeItem = (data: FieldValues) => {
     setAllItems([
-      ...allItems,
+      ...expenses,
       {
-        id: allItems.length + 1,
+        id: expenses.length + 1,
         description: data.description,
         amount: data.amount,
         category: data.category,
       },
     ]);
-    console.log(allItems);
+    console.log(expenses);
   };
 
   const deleteItem = (id: number) => {
-    setAllItems(allItems.filter((item) => item.id !== id));
+    setAllItems(expenses.filter((item) => item.id !== id));
   };
 
   return (
     <>
       <Form newItem={storeItem}></Form>
 
-      <Table allItem={allItems} deleteItem={deleteItem}></Table>
+      <Table allItem={expenses} deleteItem={deleteItem}></Table>
     </>
   );
 }
