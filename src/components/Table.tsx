@@ -2,15 +2,18 @@ import { useState } from "react";
 
 interface Prop {
   allItem: {
+    id: number;
     description: string;
     amount: number;
     category: string;
   }[];
-  deleteItem: (description: String) => void;
+  deleteItem: (id: number) => void;
 }
 
 const Table = ({ allItem, deleteItem }: Prop) => {
-  const [selectedDesc, setSelectedDesc] = useState("");
+  if (allItem.length === 0) return null;
+
+  const [id, setId] = useState(0);
   const [value, setValue] = useState("All categories");
 
   const neededData =
@@ -47,15 +50,15 @@ const Table = ({ allItem, deleteItem }: Prop) => {
 
         <tbody>
           {neededData.map((item) => (
-            <tr>
+            <tr key={item.id}>
               <td key={item["description"]}>{item["description"]}</td>
               <td key={item["amount"]}>$ {item["amount"]}</td>
               <td key={item["category"]}>{item["category"]}</td>
               <td>
                 <button
                   onClick={() => {
-                    setSelectedDesc(item["description"]);
-                    deleteItem(selectedDesc);
+                    setId(item.id);
+                    deleteItem(id);
                   }}
                   type="button"
                   className="btn btn-outline-danger"
@@ -71,6 +74,8 @@ const Table = ({ allItem, deleteItem }: Prop) => {
             <td>
               $ {neededData.reduce((total, item) => total + item.amount, 0)}
             </td>
+            <td> </td>
+            <td></td>
           </tr>
         </tbody>
       </table>

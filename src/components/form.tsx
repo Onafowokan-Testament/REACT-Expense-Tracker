@@ -7,9 +7,12 @@ interface Prop {
 }
 
 const schema = z.object({
-  description: z.string(),
-  amount: z.number({ invalid_type_error: "Field is required" }).min(3),
-  category: z.string().min(3),
+  description: z.string().min(3).max(50),
+  amount: z
+    .number({ invalid_type_error: "Field is required" })
+    .min(0.01)
+    .max(1000_000),
+  category: z.string().min(2),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -18,6 +21,7 @@ const Form = ({ newItem }: Prop) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -25,7 +29,12 @@ const Form = ({ newItem }: Prop) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit((data) => newItem((data = data)))}>
+      <form
+        onSubmit={handleSubmit((data) => {
+          newItem(data);
+          reset();
+        })}
+      >
         <div className="mb-3">
           <label htmlFor="description" className="form-label">
             Description
@@ -67,9 +76,9 @@ const Form = ({ newItem }: Prop) => {
           <select
             {...register("category")}
             className="form-select"
-            aria-label="Default select example"
             id="category"
           >
+            <option value=""></option>
             <option value="Groceries">Groceries</option>
             <option value="Utilities">Utilities</option>
             <option value="Entertainment">Entertainment</option>

@@ -7,13 +7,14 @@ import Table from "./components/Table";
 
 function App() {
   const [allItems, setAllItems] = useState([
-    { description: "test", amount: 56, category: "bolu" },
+    { id: 1, description: "cinema", amount: 50, category: "Entertainment" },
   ]);
 
   const storeItem = (data: FieldValues) => {
     setAllItems([
       ...allItems,
       {
+        id: allItems.length + 1,
         description: data.description,
         amount: data.amount,
         category: data.category,
@@ -22,8 +23,8 @@ function App() {
     console.log(allItems);
   };
 
-  const deleteItem = (desc: String) => {
-    setAllItems(allItems.filter((item) => item.description !== desc));
+  const deleteItem = (id: number) => {
+    setAllItems(allItems.filter((item) => item.id !== id));
   };
 
   return (
